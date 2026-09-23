@@ -18,10 +18,6 @@ export const profile = {
     es: "Finanzas · Análisis de negocios · Datos",
     en: "Finance · Business analysis · Data",
   } as T,
-  tagline: {
-    es: "Uno el análisis financiero con la tecnología para convertir datos en mejores decisiones.",
-    en: "I bring together financial analysis and technology to turn data into better decisions.",
-  } as T,
   summary: {
     es: "Soy estudiante avanzado de Administración de Empresas y Marketing en UADE. Trabajé en el área de Financial Services de ExxonMobil y co-fundé SupplyO, un marketplace B2B que construí de punta a punta: desde el modelo de negocio hasta la plataforma. Me muevo cómodo entre los números y el código, y disfruto diseñar soluciones simples que mejoran procesos.",
     en: "I'm an advanced Business Administration and Marketing student at UADE. I worked in ExxonMobil's Financial Services team and co-founded SupplyO, a B2B marketplace I built end to end—from the business model to the platform. I'm equally comfortable with numbers and code, and I enjoy designing simple solutions that improve processes.",
@@ -31,8 +27,6 @@ export const profile = {
     es: "Disponible para nuevas oportunidades",
     en: "Open to new opportunities",
   } as T,
-  // Palabras de la frase principal que se resaltan con color.
-  highlight: { es: "mejores decisiones", en: "better decisions" } as T,
   cv: {
     es: "/CV_Matias_Rosenblatt_ES.pdf",
     en: "/CV_Matias_Rosenblatt_EN.pdf",
@@ -42,11 +36,15 @@ export const profile = {
 export const labels = {
   nav: {
     about: { es: "Sobre mí", en: "About" },
+    letter: { es: "Carta", en: "Letter" },
     experience: { es: "Experiencia", en: "Experience" },
     interests: { es: "Intereses", en: "Interests" },
     contact: { es: "Contacto", en: "Contact" },
   },
   about: { es: "Sobre mí", en: "About" },
+  letter: { es: "Carta de presentación", en: "Cover letter" },
+  copyLetter: { es: "Copiar carta", en: "Copy letter" },
+  letterCopied: { es: "Carta copiada", en: "Letter copied" },
   experience: { es: "Experiencia", en: "Experience" },
   projects: { es: "Proyectos", en: "Projects" },
   volunteering: { es: "Liderazgo y voluntariado", en: "Leadership & volunteering" },
@@ -80,9 +78,32 @@ export const labels = {
   switchLang: { es: "Switch to English", en: "Cambiar a español" },
 } as const;
 
+// ─── Carta de presentación ───
+// Cada string de "body" es un párrafo. Editala libremente.
+export const coverLetter: { greeting: T; body: Record<Lang, string[]>; closing: T } = {
+  greeting: { es: "Estimado/a equipo de selección:", en: "Dear Hiring Team," },
+  body: {
+    es: [
+      "Mi nombre es Matias Rosenblatt. Soy estudiante avanzado de Administración de Empresas y Marketing en UADE —me recibo en diciembre de 2026— y busco sumarme a un equipo de finanzas, análisis de negocios o control de gestión donde pueda aportar desde el análisis y la ejecución.",
+      "Durante 16 meses formé parte del área de Financial Services de ExxonMobil, donde gestioné la información contable de activos fijos en SAP y validé datos críticos para el reporting financiero y los cierres mensuales, trabajando en inglés con equipos regionales e internacionales. Ahí aprendí cuánto depende una buena decisión de la calidad y la confiabilidad de la información.",
+      "En paralelo co-fundé SupplyO, un marketplace B2B de packaging. Evalué la viabilidad económica del proyecto, diseñé su modelo de monetización, sumé más de 50 proveedores y desarrollé la plataforma completa apoyándome en agentes de IA. Esa experiencia me dio una mirada integral del negocio y la capacidad de construir herramientas que automatizan procesos y ahorran tiempo.",
+      "Me considero una persona proactiva, analítica y con muchas ganas de aprender. Me encantaría conversar sobre cómo puedo sumar valor a su equipo. Muchas gracias por su tiempo.",
+    ],
+    en: [
+      "My name is Matias Rosenblatt. I'm an advanced Business Administration and Marketing student at UADE—graduating in December 2026—and I'm looking to join a finance, business analysis or performance management team where I can contribute through analysis and execution.",
+      "For 16 months I was part of ExxonMobil's Financial Services team, where I managed fixed asset accounting data in SAP and validated critical data for financial reporting and month-end close, working in English with regional and international teams. It taught me how much good decisions depend on reliable, high-quality information.",
+      "At the same time, I co-founded SupplyO, a B2B packaging marketplace. I evaluated the venture's economics, designed its monetization model, onboarded 50+ suppliers and built the entire platform with the help of AI agents. That experience gave me an end-to-end view of the business and the ability to build tools that automate processes and save time.",
+      "I'm proactive, analytical and eager to learn. I'd love to talk about how I can add value to your team. Thank you for your time.",
+    ],
+  },
+  closing: { es: "Saludos cordiales,", en: "Best regards," },
+};
+
 export type Job = {
   role: T;
   org: string;
+  // Descripción corta que aparece en un globo al pasar el mouse sobre la empresa.
+  about?: T;
   url?: string;
   dates: T;
   context?: T;
@@ -93,6 +114,10 @@ export const experience: Job[] = [
   {
     role: { es: "Co-fundador", en: "Co-founder" },
     org: "SupplyO Network",
+    about: {
+      es: "Marketplace B2B que conecta a empresas compradoras con proveedores de packaging en Argentina, a través de pedidos de cotización y un modelo de créditos.",
+      en: "B2B marketplace connecting buying companies with packaging suppliers in Argentina through quote requests and a credit-based model.",
+    },
     url: "https://supplyonetwork.com",
     dates: { es: "Ene. 2026 – Presente", en: "Jan 2026 – Present" },
     context: {
@@ -115,6 +140,10 @@ export const experience: Job[] = [
   {
     role: { es: "Financial Services Intern", en: "Financial Services Intern" },
     org: "ExxonMobil",
+    about: {
+      es: "Una de las mayores compañías de energía y química del mundo, con operaciones de exploración, producción, refinación y productos químicos.",
+      en: "One of the world’s largest energy and chemical companies, with operations spanning exploration, production, refining and chemicals.",
+    },
     dates: { es: "Oct. 2024 – Feb. 2026", en: "Oct 2024 – Feb 2026" },
     context: { es: "Industria de petróleo y gas", en: "Oil & gas" },
     bullets: {
@@ -133,6 +162,10 @@ export const experience: Job[] = [
   {
     role: { es: "Junior Contable", en: "Junior Accountant" },
     org: "WNS & Asociados",
+    about: {
+      es: "Consultora legal y contable de Buenos Aires fundada en 2015, con más de 120 especialistas en servicios contables, impositivos, legales y de tecnología.",
+      en: "Buenos Aires legal and accounting firm founded in 2015, with 120+ specialists in accounting, tax, legal and technology services.",
+    },
     dates: { es: "Ago. 2022 – Dic. 2022", en: "Aug 2022 – Dec 2022" },
     bullets: {
       es: ["Registro de libros diarios y asientos contables; soporte en cierres contables."],
@@ -145,6 +178,10 @@ export const volunteering: Job[] = [
   {
     role: { es: "Advisor", en: "Advisor" },
     org: "BBYO",
+    about: {
+      es: "Movimiento juvenil judío pluralista líder a nivel mundial, con más de 700 grupos en más de 60 países, enfocado en liderazgo, servicio comunitario e identidad.",
+      en: "The leading pluralistic Jewish teen movement, with 700+ chapters in 60+ countries, focused on leadership, community service and Jewish identity.",
+    },
     dates: { es: "Abr. 2022 – Ago. 2024", en: "Apr 2022 – Aug 2024" },
     context: { es: "Movimiento juvenil internacional", en: "International youth movement" },
     bullets: {
@@ -155,6 +192,10 @@ export const volunteering: Job[] = [
   {
     role: { es: "Educador no formal", en: "Non-formal Educator" },
     org: "Sociedad Hebraica Argentina",
+    about: {
+      es: "Institución cultural, deportiva y educativa de Buenos Aires fundada en 1926, con actividades de deporte, cultura y educación no formal para todas las edades.",
+      en: "Cultural, sports and educational institution in Buenos Aires founded in 1926, offering sports, culture and non-formal education for all ages.",
+    },
     dates: { es: "2019 – 2021", en: "2019 – 2021" },
     bullets: {
       es: [
@@ -170,6 +211,10 @@ export const volunteering: Job[] = [
   {
     role: { es: "Voluntario", en: "Volunteer" },
     org: "TECHO (Un Techo para mi País)",
+    about: {
+      es: "Organización latinoamericana fundada en Chile en 1997 que moviliza a jóvenes voluntarios junto a habitantes de asentamientos populares para superar la pobreza. Presente en 18 países.",
+      en: "Latin American organization founded in Chile in 1997 that mobilizes young volunteers alongside residents of informal settlements to overcome poverty. Active in 18 countries.",
+    },
     dates: { es: "2019", en: "2019" },
     bullets: {
       es: ["Colaboración en proyectos comunitarios."],

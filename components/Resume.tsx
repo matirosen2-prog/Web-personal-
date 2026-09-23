@@ -16,6 +16,7 @@ import {
   skills,
   languages,
   interests,
+  coverLetter,
 } from "@/content/cv";
 import { Icon } from "./Icons";
 import { CommandPalette, type Command } from "./CommandPalette";
@@ -23,7 +24,7 @@ import { CommandPalette, type Command } from "./CommandPalette";
 type Theme = "light" | "dark";
 const LANG_KEY = "cv-lang";
 const THEME_KEY = "cv-theme";
-const NAV = ["about", "experience", "interests", "contact"] as const;
+const NAV = ["about", "letter", "experience", "interests", "contact"] as const;
 
 export default function Resume() {
   const [lang, setLang] = useState<Lang>("es");
@@ -163,6 +164,20 @@ export default function Resume() {
     }
   }, [t]);
 
+  const copyLetter = useCallback(async () => {
+    const text = [
+      t(coverLetter.greeting),
+      "",
+      ...coverLetter.body[lang].flatMap((p) => [p, ""]),
+      t(coverLetter.closing),
+      profile.name,
+    ].join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast(t(labels.letterCopied));
+    } catch {}
+  }, [t, lang]);
+
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   const commands: Command[] = useMemo(() => {
@@ -171,6 +186,7 @@ export default function Resume() {
     const lnk = t(labels.cmdLinks);
     const list: Command[] = [
       { id: "about", group: nav, icon: "hash", label: t(labels.about), run: () => go("about") },
+      { id: "letter", group: nav, icon: "hash", label: t(labels.letter), run: () => go("letter") },
       { id: "experience", group: nav, icon: "hash", label: t(labels.experience), run: () => go("experience") },
       { id: "projects", group: nav, icon: "hash", label: t(labels.projects), run: () => go("projects") },
       { id: "volunteering", group: nav, icon: "hash", label: t(labels.volunteering), run: () => go("volunteering") },
@@ -191,6 +207,7 @@ export default function Resume() {
         },
       },
       { id: "copy", group: act, icon: "copy", label: t(labels.copyEmail), run: copyEmail },
+      { id: "copyl", group: act, icon: "copy", label: t(labels.copyLetter), run: copyLetter },
       {
         id: "theme",
         group: act,
@@ -214,7 +231,7 @@ export default function Resume() {
       if (p.url) list.push({ id: "p-" + p.name, group: lnk, icon: "arrow", label: p.name, run: () => window.open(p.url, "_blank") });
     });
     return list;
-  }, [t, theme, lang, applyTheme, copyEmail]);
+  }, [t, theme, lang, applyTheme, copyEmail, copyLetter]);
 
   const socials = (
     <div className="socials">
@@ -233,21 +250,6 @@ export default function Resume() {
       </button>
     </div>
   );
-
-  // Frase principal con palabras resaltadas
-  const tagline = t(profile.tagline);
-  const hl = t(profile.highlight);
-  const idx = hl ? tagline.indexOf(hl) : -1;
-  const taglineNode =
-    idx >= 0 ? (
-      <>
-        {tagline.slice(0, idx)}
-        <span className="grad-text">{hl}</span>
-        {tagline.slice(idx + hl.length)}
-      </>
-    ) : (
-      tagline
-    );
 
   const themeLabel = (th: Theme) =>
     th === "light" ? (lang === "es" ? "Modo claro" : "Light mode") : lang === "es" ? "Modo oscuro" : "Dark mode";
@@ -299,47 +301,60 @@ export default function Resume() {
         </div>
       </nav>
 
-      <div className="hero-bg" aria-hidden>
-        <div className="grid" />
-        <div className="blob b1" />
-        <div className="blob b2" />
-        <div className="blob b3" />
-      </div>
-
       <main id="top" className="wrap">
-        {/* ───────── Hero ───────── */}
-        <header className="hero">
-          <div className="hero-top">
+        {/* ───────── Encabezado ───────── */}
+        <header className="profile">
+          <div className="profile-row">
             <div className="avatar">
               <Image src={profile.photo} alt={profile.name} width={337} height={421} priority />
             </div>
+            <div className="profile-text">
+              <h1>{profile.name}</h1>
+              <p className="eyebrow">{t(profile.eyebrow)}</p>
+              <p className="location">
+                <Icon name="pin" /> {t(profile.location)}
+              </p>
+            </div>
+          </div>
+          <div className="profile-actions">
             {t(profile.status) && (
               <span className="status">
                 <span className="dot" aria-hidden />
                 {t(profile.status)}
               </span>
             )}
+            <div className="profile-buttons">
+              <a className="btn primary sm" href={t(profile.cv)} download>
+                <Icon name="download" /> {t(labels.downloadCv)}
+              </a>
+              {socials}
+            </div>
           </div>
-          <h1>{profile.name}</h1>
-          <p className="eyebrow">{t(profile.eyebrow)}</p>
-          <p className="tagline">{taglineNode}</p>
-          <div className="hero-actions">
-            <a className="btn primary" href={t(profile.cv)} download>
-              <Icon name="download" /> {t(labels.downloadCv)}
-            </a>
-            <a className="btn" href="#contact">
-              {t(labels.writeMe)}
-            </a>
-            <span className="divider" aria-hidden />
-            {socials}
-          </div>
-          <p className="location">
-            <Icon name="pin" /> {t(profile.location)}
-          </p>
         </header>
 
         <Section id="about" title={t(labels.about)}>
           <p className="lead">{t(profile.summary)}</p>
+        </Section>
+
+        <Section id="letter" title={t(labels.letter)}>
+          <article className="letter spot">
+            <p className="letter-greeting">{t(coverLetter.greeting)}</p>
+            {coverLetter.body[lang].map((para) => (
+              <p key={para}>{para}</p>
+            ))}
+            <div className="letter-sign">
+              <p>{t(coverLetter.closing)}</p>
+              <p className="signature">{profile.name}</p>
+            </div>
+            <div className="letter-actions">
+              <button className="btn sm" onClick={copyLetter}>
+                <Icon name="copy" /> {t(labels.copyLetter)}
+              </button>
+              <a className="btn sm" href={t(profile.cv)} download>
+                <Icon name="download" /> {t(labels.downloadCv)}
+              </a>
+            </div>
+          </article>
         </Section>
 
         <Section id="experience" title={t(labels.experience)}>
@@ -445,7 +460,7 @@ export default function Resume() {
         <section id="contact" className="contact reveal">
           <div className="contact-glow" aria-hidden />
           <h2>
-            <span className="grad-text">{t(labels.contactTitle)}</span>
+            {t(labels.contactTitle)}
           </h2>
           <p className="muted">{t(labels.contactText)}</p>
           <div className="hero-actions center">
@@ -502,13 +517,7 @@ function JobList({ items, lang }: { items: Job[]; lang: Lang }) {
             <div>
               <h3>{job.role[lang]}</h3>
               <p className="sub">
-                {job.url ? (
-                  <a href={job.url} target="_blank" rel="noopener noreferrer">
-                    {job.org}
-                  </a>
-                ) : (
-                  job.org
-                )}
+                <OrgName job={job} lang={lang} />
                 {job.context && <span className="muted"> · {job.context[lang]}</span>}
               </p>
             </div>
@@ -522,5 +531,25 @@ function JobList({ items, lang }: { items: Job[]; lang: Lang }) {
         </div>
       ))}
     </div>
+  );
+}
+
+function OrgName({ job, lang }: { job: Job; lang: Lang }) {
+  const name = job.url ? (
+    <a href={job.url} target="_blank" rel="noopener noreferrer">
+      {job.org}
+    </a>
+  ) : (
+    job.org
+  );
+  if (!job.about) return name;
+  return (
+    <span className="org-tip" tabIndex={job.url ? -1 : 0}>
+      <span className="org-name">{name}</span>
+      <span className="bubble" role="tooltip">
+        <strong>{job.org}</strong>
+        {job.about[lang]}
+      </span>
+    </span>
   );
 }
