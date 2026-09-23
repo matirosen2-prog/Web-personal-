@@ -19,29 +19,45 @@ import {
 } from "@/content/cv";
 import { Icon } from "./Icons";
 
-const STORAGE_KEY = "cv-lang";
+type Theme = "light" | "dark";
+const LANG_KEY = "cv-lang";
+const THEME_KEY = "cv-theme";
 
 export default function Resume() {
   const [lang, setLang] = useState<Lang>("es");
+  const [theme, setTheme] = useState<Theme>("light");
   const t = (v: T) => v[lang];
 
-  // Idioma inicial: el guardado por el visitante o el de su navegador.
+  // Idioma y tema iniciales: lo guardado por el visitante o lo de su sistema.
   useEffect(() => {
-    let initial: Lang | null = null;
+    let l: Lang | null = null;
+    let th: Theme | null = null;
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === "es" || saved === "en") initial = saved;
+      const sl = localStorage.getItem(LANG_KEY);
+      if (sl === "es" || sl === "en") l = sl;
+      const st = localStorage.getItem(THEME_KEY);
+      if (st === "light" || st === "dark") th = st;
     } catch {}
-    if (!initial && !navigator.language.toLowerCase().startsWith("es")) initial = "en";
-    if (initial) setLang(initial);
+    if (!l && !navigator.language.toLowerCase().startsWith("es")) l = "en";
+    if (!th) th = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    if (l) setLang(l);
+    setTheme(th);
   }, []);
 
   useEffect(() => {
     document.documentElement.lang = lang;
     try {
-      localStorage.setItem(STORAGE_KEY, lang);
+      localStorage.setItem(LANG_KEY, lang);
     } catch {}
   }, [lang]);
+
+  const chooseTheme = (th: Theme) => {
+    setTheme(th);
+    document.documentElement.dataset.theme = th;
+    try {
+      localStorage.setItem(THEME_KEY, th);
+    } catch {}
+  };
 
   // Animación suave al hacer scroll.
   useEffect(() => {
@@ -58,7 +74,7 @@ export default function Resume() {
             io.unobserve(e.target);
           }
         }),
-      { rootMargin: "0px 0px -8% 0px" }
+      { rootMargin: "0px 0px -5% 0px" }
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -85,243 +101,242 @@ export default function Resume() {
   return (
     <>
       <nav className="topbar">
-        <a href="#top" className="brand" aria-label={profile.name}>
-          M<span>R</span>
-        </a>
-        <div className="navlinks">
-          <a href="#about">{t(labels.nav.about)}</a>
-          <a href="#experience">{t(labels.nav.experience)}</a>
-          <a href="#interests">{t(labels.nav.interests)}</a>
-          <a href="#contact">{t(labels.nav.contact)}</a>
-        </div>
-        <div className="lang" role="group" aria-label="Idioma / Language">
-          {(["es", "en"] as Lang[]).map((l) => (
-            <button key={l} aria-pressed={lang === l} onClick={() => setLang(l)}>
-              {l.toUpperCase()}
-            </button>
-          ))}
+        <div className="topbar-inner">
+          <a href="#top" className="brand">
+            {profile.name}
+          </a>
+          <div className="navlinks">
+            <a href="#about">{t(labels.nav.about)}</a>
+            <a href="#experience">{t(labels.nav.experience)}</a>
+            <a href="#interests">{t(labels.nav.interests)}</a>
+            <a href="#contact">{t(labels.nav.contact)}</a>
+          </div>
+          <div className="toggles">
+            <div className="seg" role="group" aria-label={lang === "es" ? "Tema" : "Theme"}>
+              {(["light", "dark"] as Theme[]).map((th) => (
+                <button
+                  key={th}
+                  aria-pressed={theme === th}
+                  onClick={() => chooseTheme(th)}
+                  aria-label={th === "light" ? (lang === "es" ? "Modo claro" : "Light mode") : lang === "es" ? "Modo oscuro" : "Dark mode"}
+                  title={th === "light" ? (lang === "es" ? "Modo claro" : "Light mode") : lang === "es" ? "Modo oscuro" : "Dark mode"}
+                >
+                  <Icon name={th === "light" ? "sun" : "moon"} />
+                </button>
+              ))}
+            </div>
+            <div className="seg" role="group" aria-label="Idioma / Language">
+              {(["es", "en"] as Lang[]).map((l) => (
+                <button key={l} aria-pressed={lang === l} onClick={() => setLang(l)}>
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </nav>
 
-      <main id="top">
+      <main id="top" className="wrap">
         {/* ───────── Hero ───────── */}
-        <header className="hero wrap">
+        <header className="hero">
+          <div className="avatar">
+            <Image src={profile.photo} alt={profile.name} width={337} height={421} priority />
+          </div>
           <div className="hero-text">
+            <h1>{profile.name}</h1>
             <p className="eyebrow">{t(profile.eyebrow)}</p>
-            <h1>
-              Matias
-              <br />
-              <em>Rosenblatt</em>
-            </h1>
-            <p className="tagline">{t(profile.tagline)}</p>
-            <div className="actions">
-              <a className="btn primary" href={t(profile.cv)} download>
-                <Icon name="download" /> {t(labels.downloadCv)}
-              </a>
-              <a className="btn ghost" href="#contact">
-                {t(labels.writeMe)} <span aria-hidden>→</span>
-              </a>
-            </div>
-            <div className="hero-meta">
-              <span>
-                <Icon name="pin" /> {t(profile.location)}
-              </span>
-              {socials}
-            </div>
           </div>
-          <div className="portrait">
-            <div className="portrait-frame">
-              <Image src={profile.photo} alt={profile.name} width={337} height={421} priority />
-            </div>
+          <p className="tagline">{t(profile.tagline)}</p>
+          <div className="hero-actions">
+            <a className="btn primary" href={t(profile.cv)} download>
+              <Icon name="download" /> {t(labels.downloadCv)}
+            </a>
+            <a className="btn" href="#contact">
+              {t(labels.writeMe)}
+            </a>
+            <span className="divider" aria-hidden />
+            {socials}
           </div>
+          <p className="location">
+            <Icon name="pin" /> {t(profile.location)}
+          </p>
         </header>
 
         {/* ───────── Stats ───────── */}
-        <div className="wrap">
-          <dl className="stats reveal">
-            {stats.map((s) => (
-              <div key={s.value + s.label.en}>
-                <dt>{s.value}</dt>
-                <dd>{t(s.label)}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <dl className="stats reveal">
+          {stats.map((s) => (
+            <div key={s.value + s.label.en}>
+              <dt>{s.value}</dt>
+              <dd>{t(s.label)}</dd>
+            </div>
+          ))}
+        </dl>
 
-        {/* ───────── Sobre mí ───────── */}
-        <Section id="about" n="01" title={t(labels.about)}>
+        <Section id="about" title={t(labels.about)}>
           <p className="lead">{t(profile.summary)}</p>
         </Section>
 
-        {/* ───────── Experiencia ───────── */}
-        <Section id="experience" n="02" title={t(labels.experience)}>
-          <Timeline items={experience} lang={lang} />
+        <Section id="experience" title={t(labels.experience)}>
+          <JobList items={experience} lang={lang} />
         </Section>
 
-        {/* ───────── Proyectos ───────── */}
         {projects.length > 0 && (
-          <Section id="projects" n="03" title={t(labels.projects)}>
-            <div className="cards">
-              {projects.map((p) => (
-                <article className="card project" key={p.name}>
-                  <div className="card-head">
-                    <h3>{p.name}</h3>
-                    {p.url && (
-                      <a className="link" href={p.url} target="_blank" rel="noopener noreferrer">
-                        {t(labels.visit)} ↗
-                      </a>
-                    )}
-                  </div>
-                  <p>{t(p.description)}</p>
-                  <div className="tags">
-                    {p.tags.map((tag) => (
-                      <span className="tag" key={tag}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
+          <Section id="projects" title={t(labels.projects)}>
+            {projects.map((p) => (
+              <a
+                className="card project"
+                key={p.name}
+                href={p.url}
+                target={p.url ? "_blank" : undefined}
+                rel="noopener noreferrer"
+              >
+                <div className="card-head">
+                  <h3>{p.name}</h3>
+                  {p.url && <Icon name="arrow" />}
+                </div>
+                <p>{t(p.description)}</p>
+                <div className="tags">
+                  {p.tags.map((tag) => (
+                    <span className="tag" key={tag}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </a>
+            ))}
           </Section>
         )}
 
-        {/* ───────── Voluntariado ───────── */}
-        <Section id="volunteering" n="04" title={t(labels.volunteering)}>
-          <Timeline items={volunteering} lang={lang} />
+        <Section id="volunteering" title={t(labels.volunteering)}>
+          <JobList items={volunteering} lang={lang} />
         </Section>
 
-        {/* ───────── Educación ───────── */}
-        <Section id="education" n="05" title={t(labels.education)}>
-          {education.map((e) => (
-            <div className="edu" key={e.org}>
-              <div className="row">
-                <h3>{t(e.title)}</h3>
-                <span className="date">{t(e.dates)}</span>
-              </div>
-              <p className="org">{e.org}</p>
-              <p className="muted small">{t(e.note)}</p>
-            </div>
-          ))}
-        </Section>
-
-        {/* ───────── Habilidades e idiomas ───────── */}
-        <Section id="skills" n="06" title={t(labels.skills)}>
-          <div className="skills-grid">
-            <div>
-              {skills.map((s) => (
-                <div className="skillgroup" key={s.group.en}>
-                  <h4>{t(s.group)}</h4>
-                  <div className="tags">
-                    {s.items[lang].map((i) => (
-                      <span className="tag" key={i}>
-                        {i}
-                      </span>
-                    ))}
+        <Section id="education" title={t(labels.education)}>
+          <div className="list">
+            {education.map((e) => (
+              <div className="item" key={e.org}>
+                <div className="item-head">
+                  <div>
+                    <h3>{t(e.title)}</h3>
+                    <p className="sub">{e.org}</p>
                   </div>
+                  <span className="date">{t(e.dates)}</span>
                 </div>
-              ))}
-            </div>
-            <div>
-              <h4>{t(labels.languages)}</h4>
-              <ul className="langs">
-                {languages.map((l) => (
-                  <li key={l.name.en}>
-                    <div className="row">
-                      <span>{t(l.name)}</span>
-                      <span className="muted small">{t(l.level)}</span>
-                    </div>
-                    <div className="bar">
-                      <span style={{ width: `${l.value}%` }} />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Section>
-
-        {/* ───────── Intereses ───────── */}
-        <Section id="interests" n="07" title={t(labels.interests)}>
-          <p className="lead small-lead">{t(labels.interestsIntro)}</p>
-          <div className="interests">
-            {interests.map((i) => (
-              <article className="card interest" key={i.icon}>
-                <span className="interest-icon">
-                  <Icon name={i.icon} />
-                </span>
-                <h3>{t(i.title)}</h3>
-                <p>{t(i.text)}</p>
-              </article>
+                <p className="muted small">{t(e.note)}</p>
+              </div>
             ))}
           </div>
         </Section>
 
-        {/* ───────── Contacto ───────── */}
+        <Section id="skills" title={t(labels.skills)}>
+          <div className="skills">
+            {skills.map((s) => (
+              <div className="skill-row" key={s.group.en}>
+                <h4>{t(s.group)}</h4>
+                <div className="tags">
+                  {s.items[lang].map((i) => (
+                    <span className="tag" key={i}>
+                      {i}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section id="languages" title={t(labels.languages)}>
+          <ul className="langs">
+            {languages.map((l) => (
+              <li key={l.name.en}>
+                <span>{t(l.name)}</span>
+                <span className="bar" aria-hidden>
+                  <span style={{ width: `${l.value}%` }} />
+                </span>
+                <span className="level">{t(l.level)}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section id="interests" title={t(labels.interests)}>
+          <p className="muted intro">{t(labels.interestsIntro)}</p>
+          <div className="interests">
+            {interests.map((i) => (
+              <div className="card interest" key={i.icon}>
+                <span className="interest-icon">
+                  <Icon name={i.icon} />
+                </span>
+                <div>
+                  <h3>{t(i.title)}</h3>
+                  <p>{t(i.text)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
         <section id="contact" className="contact reveal">
-          <div className="wrap">
-            <p className="eyebrow">{t(labels.contact)}</p>
-            <h2 className="contact-title">{t(labels.contactTitle)}</h2>
-            <p className="contact-text">{t(labels.contactText)}</p>
-            <div className="actions">
-              <a className="btn primary" href={`mailto:${profile.email}`}>
-                <Icon name="mail" /> {profile.email}
-              </a>
-              <a className="btn ghost" href={t(profile.cv)} download>
-                <Icon name="download" /> {t(labels.downloadCv)}
-              </a>
-            </div>
-            {socials}
+          <h2>{t(labels.contactTitle)}</h2>
+          <p className="muted">{t(labels.contactText)}</p>
+          <div className="hero-actions center">
+            <a className="btn primary" href={`mailto:${profile.email}`}>
+              <Icon name="mail" /> {profile.email}
+            </a>
+            <a className="btn" href={t(profile.cv)} download>
+              <Icon name="download" /> {t(labels.downloadCv)}
+            </a>
           </div>
         </section>
 
-        <footer className="wrap footer">
-          <span>© {new Date().getFullYear()} {profile.name}</span>
-          <span>{t(profile.location)}</span>
+        <footer className="footer">
+          <span>
+            © {new Date().getFullYear()} {profile.name}
+          </span>
+          {socials}
         </footer>
       </main>
     </>
   );
 }
 
-function Section({ id, n, title, children }: { id: string; n: string; title: string; children: React.ReactNode }) {
+function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="section wrap reveal">
-      <div className="section-label">
-        <span className="num">{n}</span>
-        <h2>{title}</h2>
-      </div>
+    <section id={id} className="section reveal">
+      <h2 className="section-title">{title}</h2>
       <div className="section-body">{children}</div>
     </section>
   );
 }
 
-function Timeline({ items, lang }: { items: Job[]; lang: Lang }) {
+function JobList({ items, lang }: { items: Job[]; lang: Lang }) {
   return (
-    <ol className="timeline">
+    <div className="list">
       {items.map((job) => (
-        <li key={job.org + job.dates.en}>
-          <div className="row">
-            <h3>{job.role[lang]}</h3>
+        <div className="item" key={job.org + job.dates.en}>
+          <div className="item-head">
+            <div>
+              <h3>{job.role[lang]}</h3>
+              <p className="sub">
+                {job.url ? (
+                  <a href={job.url} target="_blank" rel="noopener noreferrer">
+                    {job.org}
+                  </a>
+                ) : (
+                  job.org
+                )}
+                {job.context && <span className="muted"> · {job.context[lang]}</span>}
+              </p>
+            </div>
             <span className="date">{job.dates[lang]}</span>
           </div>
-          <p className="org">
-            {job.url ? (
-              <a href={job.url} target="_blank" rel="noopener noreferrer">
-                {job.org} ↗
-              </a>
-            ) : (
-              job.org
-            )}
-            {job.context && <span className="muted"> · {job.context[lang]}</span>}
-          </p>
-          <ul>
+          <ul className="bullets">
             {job.bullets[lang].map((b) => (
               <li key={b}>{b}</li>
             ))}
           </ul>
-        </li>
+        </div>
       ))}
-    </ol>
+    </div>
   );
 }
