@@ -26,6 +26,13 @@ export const profile = {
     es: "Soy estudiante avanzado de Administración de Empresas y Marketing en UADE. Trabajé en el área de Financial Services de ExxonMobil y co-fundé SupplyO, un marketplace B2B que construí de punta a punta: desde el modelo de negocio hasta la plataforma. Me muevo cómodo entre los números y el código, y disfruto diseñar soluciones simples que mejoran procesos.",
     en: "I'm an advanced Business Administration and Marketing student at UADE. I worked in ExxonMobil's Financial Services team and co-founded SupplyO, a B2B marketplace I built end to end—from the business model to the platform. I'm equally comfortable with numbers and code, and I enjoy designing simple solutions that improve processes.",
   } as T,
+  // Mensaje del indicador verde en la portada. Dejalo vacío para ocultarlo.
+  status: {
+    es: "Disponible para nuevas oportunidades",
+    en: "Open to new opportunities",
+  } as T,
+  // Palabras de la frase principal que se resaltan con color.
+  highlight: { es: "mejores decisiones", en: "better decisions" } as T,
   cv: {
     es: "/CV_Matias_Rosenblatt_ES.pdf",
     en: "/CV_Matias_Rosenblatt_EN.pdf",
@@ -60,6 +67,17 @@ export const labels = {
   downloadCv: { es: "Descargar CV", en: "Download CV" },
   writeMe: { es: "Escribime", en: "Get in touch" },
   visit: { es: "Visitar sitio", en: "Visit site" },
+  copyEmail: { es: "Copiar email", en: "Copy email" },
+  copied: { es: "Email copiado", en: "Email copied" },
+  cmdPlaceholder: { es: "Buscá una acción o sección…", en: "Search for an action or section…" },
+  cmdEmpty: { es: "Sin resultados", en: "No results" },
+  cmdNavigate: { es: "Navegar", en: "Navigate" },
+  cmdActions: { es: "Acciones", en: "Actions" },
+  cmdLinks: { es: "Links", en: "Links" },
+  cmdTheme: { es: "Cambiar a modo", en: "Switch to" },
+  light: { es: "claro", en: "light mode" },
+  dark: { es: "oscuro", en: "dark mode" },
+  switchLang: { es: "Switch to English", en: "Cambiar a español" },
 } as const;
 
 export type Job = {

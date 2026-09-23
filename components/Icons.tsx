@@ -75,6 +75,39 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M7 17L17 7M8 7h9v9" />
     </>
   ),
+  search: (
+    <>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" />
+    </>
+  ),
+  copy: (
+    <>
+      <rect x="9" y="9" width="12" height="12" rx="2" />
+      <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+    </>
+  ),
+  check: (
+    <>
+      <path d="M5 12l5 5 9-10" />
+    </>
+  ),
+  command: (
+    <>
+      <path d="M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3z" />
+    </>
+  ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+    </>
+  ),
+  hash: (
+    <>
+      <path d="M5 9h14M5 15h14M10 4L8 20M16 4l-2 16" />
+    </>
+  ),
   pin: (
     <>
       <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />
