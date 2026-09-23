@@ -297,6 +297,11 @@ export const skills: { group: T; items: Record<Lang, string[]> }[] = [
 // Sumá uno por línea. "url" es opcional (link al certificado).
 export const certifications: { name: T; issuer: string; year: string; url?: string }[] = [
   {
+    name: { es: "AI Fluency for Small Businesses", en: "AI Fluency for Small Businesses" },
+    issuer: "Anthropic · PayPal",
+    year: "2026",
+  },
+  {
     name: { es: "International Certificate in Education (inglés)", en: "International Certificate in Education (English)" },
     issuer: "Cambridge Assessment International Education",
     year: "2018",
