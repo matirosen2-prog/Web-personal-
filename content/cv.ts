@@ -4,24 +4,27 @@
 // ─────────────────────────────────────────────────────────────
 
 export type Lang = "es" | "en";
-type T = Record<Lang, string>;
+export type T = Record<Lang, string>;
 
 export const profile = {
   name: "Matias Rosenblatt",
   email: "matirosen2@gmail.com",
-  // Pegá tu URL de LinkedIn acá (ej: "https://www.linkedin.com/in/tu-usuario").
-  // Si queda vacío, el botón no se muestra.
+  photo: "/matias.jpg",
+  // Dejá cualquiera vacío ("") para ocultarlo.
   linkedin: "https://www.linkedin.com/in/matias-rosenblatt/",
-  // Se muestra solo como ícono chico en la sección de contacto. Dejalo vacío ("") para ocultarlo.
   instagram: "https://www.instagram.com/matirosenblatt_/",
   location: { es: "Buenos Aires, Argentina", en: "Buenos Aires, Argentina" } as T,
-  headline: {
-    es: "Finanzas y análisis de negocios · Datos · Automatización con IA",
-    en: "Finance & business analysis · Data · AI-powered automation",
+  eyebrow: {
+    es: "Finanzas · Análisis de negocios · Datos",
+    en: "Finance · Business analysis · Data",
+  } as T,
+  tagline: {
+    es: "Uno el análisis financiero con la tecnología para convertir datos en mejores decisiones.",
+    en: "I bring together financial analysis and technology to turn data into better decisions.",
   } as T,
   summary: {
-    es: "Estudiante avanzado de Administración de Empresas y Marketing (UADE) con experiencia en finanzas corporativas en ExxonMobil y co-fundador de SupplyO, un marketplace B2B que construí de punta a punta. Combino análisis financiero con capacidad técnica para crear herramientas que mejoran procesos y la toma de decisiones basada en datos.",
-    en: "Advanced Business Administration and Marketing student (UADE) with corporate finance experience at ExxonMobil and co-founder of SupplyO, a B2B marketplace I built end to end. I combine financial analysis with hands-on technical skills to build tools that improve processes and data-driven decision-making.",
+    es: "Soy estudiante avanzado de Administración de Empresas y Marketing en UADE. Trabajé en el área de Financial Services de ExxonMobil y co-fundé SupplyO, un marketplace B2B que construí de punta a punta: desde el modelo de negocio hasta la plataforma. Me muevo cómodo entre los números y el código, y disfruto diseñar soluciones simples que mejoran procesos.",
+    en: "I'm an advanced Business Administration and Marketing student at UADE. I worked in ExxonMobil's Financial Services team and co-founded SupplyO, a B2B marketplace I built end to end—from the business model to the platform. I'm equally comfortable with numbers and code, and I enjoy designing simple solutions that improve processes.",
   } as T,
   cv: {
     es: "/CV_Matias_Rosenblatt_ES.pdf",
@@ -29,21 +32,42 @@ export const profile = {
   } as T,
 };
 
+export const stats: { value: string; label: T }[] = [
+  { value: "16", label: { es: "meses en Financial Services de ExxonMobil", en: "months in ExxonMobil Financial Services" } },
+  { value: "+50", label: { es: "proveedores sumados a SupplyO", en: "suppliers onboarded at SupplyO" } },
+  { value: "4", label: { es: "idiomas", en: "languages" } },
+  { value: "2", label: { es: "licenciaturas en curso", en: "degrees in progress" } },
+];
+
 export const labels = {
+  nav: {
+    about: { es: "Sobre mí", en: "About" },
+    experience: { es: "Experiencia", en: "Experience" },
+    interests: { es: "Intereses", en: "Interests" },
+    contact: { es: "Contacto", en: "Contact" },
+  },
   about: { es: "Sobre mí", en: "About" },
   experience: { es: "Experiencia", en: "Experience" },
   projects: { es: "Proyectos", en: "Projects" },
+  volunteering: { es: "Liderazgo y voluntariado", en: "Leadership & volunteering" },
   education: { es: "Educación", en: "Education" },
   skills: { es: "Habilidades", en: "Skills" },
   languages: { es: "Idiomas", en: "Languages" },
-  contact: { es: "Contacto", en: "Contact" },
-  downloadCv: { es: "Descargar CV", en: "Download CV" },
-  visit: { es: "Visitar sitio", en: "Visit site" },
-  contactText: {
-    es: "¿Querés conversar sobre una oportunidad? Escribime.",
-    en: "Want to talk about an opportunity? Get in touch.",
+  interests: { es: "Intereses", en: "Interests" },
+  interestsIntro: {
+    es: "Lo que me mueve fuera del trabajo, y que muchas veces termina influyendo en cómo trabajo.",
+    en: "What drives me outside of work—and often shapes how I work.",
   },
-} satisfies Record<string, T>;
+  contact: { es: "Contacto", en: "Contact" },
+  contactTitle: { es: "Hablemos.", en: "Let's talk." },
+  contactText: {
+    es: "¿Tenés una oportunidad o un proyecto en mente? Escribime y te respondo a la brevedad.",
+    en: "Have an opportunity or a project in mind? Drop me a line and I'll get back to you soon.",
+  },
+  downloadCv: { es: "Descargar CV", en: "Download CV" },
+  writeMe: { es: "Escribime", en: "Get in touch" },
+  visit: { es: "Visitar sitio", en: "Visit site" },
+} as const;
 
 export type Job = {
   role: T;
@@ -104,13 +128,41 @@ export const experience: Job[] = [
       en: ["Maintained general journals and accounting entries; supported month-end close."],
     },
   },
+];
+
+export const volunteering: Job[] = [
   {
     role: { es: "Advisor", en: "Advisor" },
     org: "BBYO",
     dates: { es: "Abr. 2022 – Ago. 2024", en: "Apr 2022 – Aug 2024" },
+    context: { es: "Movimiento juvenil internacional", en: "International youth movement" },
     bullets: {
       es: ["Liderazgo de grupos de trabajo, seguimiento de objetivos y coordinación con stakeholders."],
       en: ["Led work groups, tracked goals and coordinated with stakeholders."],
+    },
+  },
+  {
+    role: { es: "Educador no formal", en: "Non-formal Educator" },
+    org: "Sociedad Hebraica Argentina",
+    dates: { es: "2019 – 2021", en: "2019 – 2021" },
+    bullets: {
+      es: [
+        "Planificación y conducción de actividades educativas y recreativas para la comunidad.",
+        "Trabajo en equipo en programas y eventos semanales.",
+      ],
+      en: [
+        "Planned and led educational and recreational activities for the community.",
+        "Worked as part of a team on weekly programs and events.",
+      ],
+    },
+  },
+  {
+    role: { es: "Voluntario", en: "Volunteer" },
+    org: "TECHO (Un Techo para mi País)",
+    dates: { es: "2019", en: "2019" },
+    bullets: {
+      es: ["Colaboración en proyectos comunitarios."],
+      en: ["Collaborated on community projects."],
     },
   },
 ];
@@ -163,10 +215,7 @@ export const skills: { group: T; items: Record<Lang, string[]> }[] = [
   },
   {
     group: { es: "Herramientas", en: "Tools" },
-    items: {
-      es: ["SAP", "Excel", "PowerPoint"],
-      en: ["SAP", "Excel", "PowerPoint"],
-    },
+    items: { es: ["SAP", "Excel", "PowerPoint"], en: ["SAP", "Excel", "PowerPoint"] },
   },
   {
     group: { es: "Datos y tecnología", en: "Data & tech" },
@@ -177,8 +226,54 @@ export const skills: { group: T; items: Record<Lang, string[]> }[] = [
   },
 ];
 
-export const languages: { name: T; level: T }[] = [
-  { name: { es: "Español", en: "Spanish" }, level: { es: "Nativo", en: "Native" } },
-  { name: { es: "Inglés", en: "English" }, level: { es: "Bilingüe (Cambridge ICE)", en: "Bilingual (Cambridge ICE)" } },
-  { name: { es: "Francés y portugués", en: "French & Portuguese" }, level: { es: "Básico", en: "Basic" } },
+// value: 0–100, solo para la barra visual.
+export const languages: { name: T; level: T; value: number }[] = [
+  { name: { es: "Español", en: "Spanish" }, level: { es: "Nativo", en: "Native" }, value: 100 },
+  { name: { es: "Inglés", en: "English" }, level: { es: "C1/C2 · Cambridge", en: "C1/C2 · Cambridge" }, value: 92 },
+  { name: { es: "Portugués", en: "Portuguese" }, level: { es: "B1", en: "B1" }, value: 55 },
+  { name: { es: "Francés", en: "French" }, level: { es: "A2", en: "A2" }, value: 35 },
+];
+
+// icon: "growth" | "finance" | "sport" | "music" | "tech"
+export const interests: { icon: string; title: T; text: T }[] = [
+  {
+    icon: "growth",
+    title: { es: "Desarrollo personal", en: "Personal growth" },
+    text: {
+      es: "Me interesa aprender de forma continua: hábitos, liderazgo y cómo ser un poco mejor cada día.",
+      en: "I'm into continuous learning: habits, leadership and getting a little better every day.",
+    },
+  },
+  {
+    icon: "finance",
+    title: { es: "Finanzas e inversiones", en: "Finance & investing" },
+    text: {
+      es: "Me apasionan los mercados, las inversiones y entender cómo las empresas crean valor.",
+      en: "I'm passionate about markets, investing and understanding how companies create value.",
+    },
+  },
+  {
+    icon: "sport",
+    title: { es: "Deporte", en: "Sports" },
+    text: {
+      es: "El deporte me da disciplina, constancia y energía, y lo llevo a todo lo que hago.",
+      en: "Sports give me discipline, consistency and energy that I bring to everything I do.",
+    },
+  },
+  {
+    icon: "music",
+    title: { es: "Música", en: "Music" },
+    text: {
+      es: "La música me acompaña en el día a día y es una fuente constante de inspiración.",
+      en: "Music is part of my everyday life and a constant source of inspiration.",
+    },
+  },
+  {
+    icon: "tech",
+    title: { es: "Tecnología e IA", en: "Tech & AI" },
+    text: {
+      es: "Disfruto construir productos y automatizar procesos con IA; siempre estoy probando herramientas nuevas.",
+      en: "I enjoy building products and automating processes with AI—always trying out new tools.",
+    },
+  },
 ];
