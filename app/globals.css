@@ -129,11 +129,11 @@ kbd {
   display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 7px;
   background: var(--grad); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em;
 }
-.navlinks { display: flex; gap: 4px; font-size: 13.5px; color: var(--muted); }
+.navlinks { display: flex; gap: 4px; margin-left: -10px; font-size: 13.5px; color: var(--muted); }
 .navlinks a { padding: 6px 10px; border-radius: 7px; transition: color 0.15s, background 0.15s; }
 .navlinks a:hover { color: var(--text); background: var(--bg-soft); }
 .navlinks a.active { color: var(--text); background: var(--bg-soft); box-shadow: inset 0 0 0 1px var(--border); }
-.toggles { display: flex; gap: 8px; align-items: center; }
+.toggles { display: flex; gap: 8px; align-items: center; margin-left: auto; }
 .kbd-btn {
   display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 6px 0 9px;
   border: 1px solid var(--border); border-radius: 999px; background: var(--bg-soft); color: var(--muted);
@@ -428,7 +428,6 @@ h4 { margin: 0; font-size: 13.5px; font-weight: 500; color: var(--muted); }
 }
 @media (max-width: 480px) {
   .wrap, .topbar-inner { padding-left: 16px; padding-right: 16px; }
-  .brand-name { display: none; }
   .profile { padding-top: 36px; }
   .profile h1 { font-size: 22px; }
   .avatar { width: 60px; height: 60px; }

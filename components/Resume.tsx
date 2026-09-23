@@ -259,12 +259,6 @@ export default function Resume() {
       <div id="progress" aria-hidden />
       <nav className="topbar">
         <div className="topbar-inner">
-          <a href="#top" className="brand">
-            <span className="brand-mark" aria-hidden>
-              MR
-            </span>
-            <span className="brand-name">{profile.name}</span>
-          </a>
           <div className="navlinks">
             {NAV.map((id) => (
               <a key={id} href={`#${id}`} className={activeSection === id ? "active" : undefined}>
