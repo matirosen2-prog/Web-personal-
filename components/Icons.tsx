@@ -108,6 +108,11 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M5 9h14M5 15h14M10 4L8 20M16 4l-2 16" />
     </>
   ),
+  chevron: (
+    <>
+      <path d="M6 9l6 6 6-6" />
+    </>
+  ),
   pin: (
     <>
       <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />

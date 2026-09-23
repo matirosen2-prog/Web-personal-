@@ -335,18 +335,48 @@ h4 { margin: 0; font-size: 13.5px; font-weight: 500; color: var(--muted); }
 
 /* ───────── Carta de presentación ───────── */
 .letter {
-  position: relative; overflow: hidden; padding: 28px 30px; border: 1px solid var(--border); border-radius: 14px;
+  position: relative; overflow: hidden; border: 1px solid var(--border); border-radius: 14px;
   background: var(--bg); transition: border-color 0.2s, box-shadow 0.2s;
 }
-.letter::after {
-  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--grad);
+.letter:hover, .letter.open { border-color: var(--border-strong); box-shadow: var(--shadow); }
+.letter-toggle {
+  display: flex; align-items: center; gap: 14px; width: 100%; padding: 18px 20px;
+  border: 0; background: transparent; text-align: left; cursor: pointer;
 }
-.letter p { position: relative; margin: 0 0 14px; font-size: 15px; line-height: 1.75; color: color-mix(in srgb, var(--text) 88%, var(--muted)); }
+.letter-icon {
+  flex: none; display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 10px;
+  color: var(--accent); background: var(--accent-soft);
+}
+.letter-head { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.letter-head strong { font-size: 15px; font-weight: 600; }
+.letter-head span { font-size: 13.5px; color: var(--muted); }
+.letter-cta {
+  flex: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500;
+  color: var(--text); padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--bg-soft);
+}
+.letter-cta .icon { width: 14px; height: 14px; transition: transform 0.3s ease; }
+.letter.open .letter-cta .icon { transform: rotate(180deg); }
+.letter-collapse { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.letter.open .letter-collapse { grid-template-rows: 1fr; }
+.letter-inner { overflow: hidden; }
+.letter-content {
+  margin: 0 20px 20px; padding: 22px 4px 0; border-top: 1px dashed var(--border-strong);
+  opacity: 0; transform: translateY(-6px); transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.letter.open .letter-content { opacity: 1; transform: none; transition-delay: 0.1s; }
+.letter p { margin: 0 0 14px; font-size: 15px; line-height: 1.75; color: color-mix(in srgb, var(--text) 88%, var(--muted)); }
 .letter .letter-greeting { font-weight: 600; color: var(--text); margin-bottom: 16px; }
-.letter-sign { position: relative; margin-top: 22px; }
+.letter-sign { margin-top: 22px; }
 .letter-sign p { margin: 0; }
 .letter .signature { margin-top: 4px; font-weight: 600; color: var(--text); }
-.letter-actions { position: relative; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border-strong); }
+.letter-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+@media (max-width: 480px) {
+  .letter-toggle { flex-wrap: wrap; padding: 16px; row-gap: 12px; }
+  .letter-head { flex: 1 1 calc(100% - 52px); }
+  .letter-cta { margin-left: 52px; }
+  .letter-content { margin: 0 16px 16px; }
+}
+@media print { .letter-collapse { grid-template-rows: 1fr; } .letter-content { opacity: 1; transform: none; } .letter-cta { display: none; } }
 
 /* ───────── Contacto ───────── */
 .contact { position: relative; text-align: center; padding: 88px 0 72px; border-top: 1px solid var(--border); overflow: hidden; }
@@ -431,7 +461,6 @@ h4 { margin: 0; font-size: 13.5px; font-weight: 500; color: var(--muted); }
   .profile { padding-top: 36px; }
   .profile h1 { font-size: 22px; }
   .avatar { width: 60px; height: 60px; }
-  .letter { padding: 22px 20px; }
   .item-head { flex-direction: column; gap: 2px; }
   .langs li { grid-template-columns: 1fr auto; row-gap: 6px; }
   .langs .bar { grid-row: 2; grid-column: 1 / -1; }

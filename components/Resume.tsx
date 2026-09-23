@@ -33,6 +33,7 @@ export default function Resume() {
   const [toast, setToast] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string>("");
   const [isMac, setIsMac] = useState(true);
+  const [letterOpen, setLetterOpen] = useState(false);
   const t = useCallback((v: T) => v[lang], [lang]);
 
   // ── Preferencias iniciales ──
@@ -186,7 +187,7 @@ export default function Resume() {
     const lnk = t(labels.cmdLinks);
     const list: Command[] = [
       { id: "about", group: nav, icon: "hash", label: t(labels.about), run: () => go("about") },
-      { id: "letter", group: nav, icon: "hash", label: t(labels.letter), run: () => go("letter") },
+      { id: "letter", group: nav, icon: "hash", label: t(labels.letter), run: () => { setLetterOpen(true); go("letter"); } },
       { id: "experience", group: nav, icon: "hash", label: t(labels.experience), run: () => go("experience") },
       { id: "projects", group: nav, icon: "hash", label: t(labels.projects), run: () => go("projects") },
       { id: "volunteering", group: nav, icon: "hash", label: t(labels.volunteering), run: () => go("volunteering") },
@@ -331,22 +332,46 @@ export default function Resume() {
         </Section>
 
         <Section id="letter" title={t(labels.letter)}>
-          <article className="letter spot">
-            <p className="letter-greeting">{t(coverLetter.greeting)}</p>
-            {coverLetter.body[lang].map((para) => (
-              <p key={para}>{para}</p>
-            ))}
-            <div className="letter-sign">
-              <p>{t(coverLetter.closing)}</p>
-              <p className="signature">{profile.name}</p>
-            </div>
-            <div className="letter-actions">
-              <button className="btn sm" onClick={copyLetter}>
-                <Icon name="copy" /> {t(labels.copyLetter)}
-              </button>
-              <a className="btn sm" href={t(profile.cv)} download>
-                <Icon name="download" /> {t(labels.downloadCv)}
-              </a>
+          <article className={`letter ${letterOpen ? "open" : ""}`}>
+            <button
+              className="letter-toggle"
+              onClick={() => setLetterOpen((o) => !o)}
+              aria-expanded={letterOpen}
+              aria-controls="letter-body"
+            >
+              <span className="letter-icon" aria-hidden>
+                <Icon name="mail" />
+              </span>
+              <span className="letter-head">
+                <strong>{t(labels.letter)}</strong>
+                <span>{t(labels.letterTeaser)}</span>
+              </span>
+              <span className="letter-cta">
+                {letterOpen ? t(labels.hideLetter) : t(labels.readLetter)}
+                <Icon name="chevron" />
+              </span>
+            </button>
+            <div className="letter-collapse" id="letter-body">
+              <div className="letter-inner">
+                <div className="letter-content">
+                  <p className="letter-greeting">{t(coverLetter.greeting)}</p>
+                  {coverLetter.body[lang].map((para) => (
+                    <p key={para}>{para}</p>
+                  ))}
+                  <div className="letter-sign">
+                    <p>{t(coverLetter.closing)}</p>
+                    <p className="signature">{profile.name}</p>
+                  </div>
+                  <div className="letter-actions">
+                    <button className="btn sm" onClick={copyLetter}>
+                      <Icon name="copy" /> {t(labels.copyLetter)}
+                    </button>
+                    <a className="btn sm" href={t(profile.cv)} download>
+                      <Icon name="download" /> {t(labels.downloadCv)}
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
         </Section>

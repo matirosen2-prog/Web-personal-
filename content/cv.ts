@@ -44,6 +44,12 @@ export const labels = {
   about: { es: "Sobre mí", en: "About" },
   letter: { es: "Carta de presentación", en: "Cover letter" },
   copyLetter: { es: "Copiar carta", en: "Copy letter" },
+  letterTeaser: {
+    es: "Por qué me interesa sumarme a tu equipo y qué puedo aportar.",
+    en: "Why I'd like to join your team and what I can bring.",
+  },
+  readLetter: { es: "Leer carta", en: "Read letter" },
+  hideLetter: { es: "Ocultar carta", en: "Hide letter" },
   letterCopied: { es: "Carta copiada", en: "Letter copied" },
   experience: { es: "Experiencia", en: "Experience" },
   projects: { es: "Proyectos", en: "Projects" },
