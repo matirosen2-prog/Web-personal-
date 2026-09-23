@@ -13,6 +13,8 @@ export const profile = {
   // Dejá cualquiera vacío ("") para ocultarlo.
   linkedin: "https://www.linkedin.com/in/matias-rosenblatt/",
   instagram: "https://www.instagram.com/matirosenblatt_/",
+  // Número en formato internacional, sin "+" ni espacios.
+  whatsapp: "5491130603727",
   location: { es: "Buenos Aires, Argentina", en: "Buenos Aires, Argentina" } as T,
   eyebrow: {
     es: "Finanzas · Análisis de negocios · Datos",
@@ -38,7 +40,7 @@ export const labels = {
     about: { es: "Sobre mí", en: "About" },
     letter: { es: "Carta", en: "Letter" },
     experience: { es: "Experiencia", en: "Experience" },
-    interests: { es: "Intereses", en: "Interests" },
+    certifications: { es: "Certificaciones", en: "Certifications" },
     contact: { es: "Contacto", en: "Contact" },
   },
   about: { es: "Sobre mí", en: "About" },
@@ -57,6 +59,8 @@ export const labels = {
   education: { es: "Educación", en: "Education" },
   skills: { es: "Habilidades", en: "Skills" },
   languages: { es: "Idiomas", en: "Languages" },
+  certifications: { es: "Certificaciones y cursos", en: "Certifications & courses" },
+  whatsapp: { es: "WhatsApp", en: "WhatsApp" },
   interests: { es: "Intereses", en: "Interests" },
   interestsIntro: {
     es: "Lo que me mueve fuera del trabajo, y que muchas veces termina influyendo en cómo trabajo.",
@@ -289,6 +293,16 @@ export const skills: { group: T; items: Record<Lang, string[]> }[] = [
 ];
 
 // value: 0–100, solo para la barra visual.
+// ─── Certificaciones y cursos ───
+// Sumá uno por línea. "url" es opcional (link al certificado).
+export const certifications: { name: T; issuer: string; year: string; url?: string }[] = [
+  {
+    name: { es: "International Certificate in Education (inglés)", en: "International Certificate in Education (English)" },
+    issuer: "Cambridge Assessment International Education",
+    year: "2018",
+  },
+];
+
 export const languages: { name: T; level: T; value: number }[] = [
   { name: { es: "Español", en: "Spanish" }, level: { es: "Nativo", en: "Native" }, value: 100 },
   { name: { es: "Inglés", en: "English" }, level: { es: "C1/C2 · Cambridge", en: "C1/C2 · Cambridge" }, value: 92 },

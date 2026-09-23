@@ -1,20 +1,32 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const sans = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
+// Dirección pública del sitio (Vercel la completa sola en producción).
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
+const title = "Matias Rosenblatt — Finanzas y análisis de negocios";
+const description =
+  "Finanzas corporativas (ExxonMobil), co-fundador de SupplyO, análisis de datos y automatización con IA. Buenos Aires, Argentina.";
+
 export const metadata: Metadata = {
-  title: "Matias Rosenblatt — Finanzas y análisis de negocios",
-  description:
-    "Matias Rosenblatt: finanzas corporativas (ExxonMobil), co-fundador de SupplyO, análisis de datos y automatización con IA.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
   openGraph: {
-    title: "Matias Rosenblatt",
-    description: "Finanzas · Análisis de negocios · Datos",
+    title,
+    description,
     type: "profile",
-    images: ["/matias.jpg"],
+    locale: "es_AR",
+    siteName: "Matias Rosenblatt",
   },
+  twitter: { card: "summary_large_image", title, description },
 };
 
 // Aplica el tema guardado antes de pintar la página (evita el parpadeo).
@@ -26,7 +38,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

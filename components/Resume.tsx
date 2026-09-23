@@ -15,7 +15,7 @@ import {
   education,
   skills,
   languages,
-  interests,
+  certifications,
   coverLetter,
 } from "@/content/cv";
 import { Icon } from "./Icons";
@@ -24,7 +24,7 @@ import { CommandPalette, type Command } from "./CommandPalette";
 type Theme = "light" | "dark";
 const LANG_KEY = "cv-lang";
 const THEME_KEY = "cv-theme";
-const NAV = ["about", "letter", "experience", "interests", "contact"] as const;
+const NAV = ["about", "letter", "experience", "certifications", "contact"] as const;
 
 export default function Resume() {
   const [lang, setLang] = useState<Lang>("es");
@@ -193,7 +193,7 @@ export default function Resume() {
       { id: "volunteering", group: nav, icon: "hash", label: t(labels.volunteering), run: () => go("volunteering") },
       { id: "education", group: nav, icon: "hash", label: t(labels.education), run: () => go("education") },
       { id: "skills", group: nav, icon: "hash", label: t(labels.skills), run: () => go("skills") },
-      { id: "interests", group: nav, icon: "hash", label: t(labels.interests), run: () => go("interests") },
+      { id: "certifications", group: nav, icon: "hash", label: t(labels.certifications), run: () => go("certifications") },
       { id: "contact", group: nav, icon: "hash", label: t(labels.contact), run: () => go("contact") },
       {
         id: "cv",
@@ -224,6 +224,8 @@ export default function Resume() {
         run: () => setLang(lang === "es" ? "en" : "es"),
       },
     ];
+    if (profile.whatsapp)
+      list.push({ id: "wa", group: lnk, icon: "whatsapp", label: "WhatsApp", run: () => window.open(`https://wa.me/${profile.whatsapp}`, "_blank") });
     if (profile.linkedin)
       list.push({ id: "li", group: lnk, icon: "linkedin", label: "LinkedIn", run: () => window.open(profile.linkedin, "_blank") });
     if (profile.instagram)
@@ -239,6 +241,11 @@ export default function Resume() {
       {profile.linkedin && (
         <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
           <Icon name="linkedin" />
+        </a>
+      )}
+      {profile.whatsapp && (
+        <a href={`https://wa.me/${profile.whatsapp}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp">
+          <Icon name="whatsapp" />
         </a>
       )}
       {profile.instagram && (
@@ -445,6 +452,37 @@ export default function Resume() {
           </div>
         </Section>
 
+        {certifications.length > 0 && (
+          <Section id="certifications" title={t(labels.certifications)}>
+            <div className="list certs">
+              {certifications.map((c) => (
+                <div className="item cert" key={c.issuer + c.year + c.name.en}>
+                  <span className="cert-icon" aria-hidden>
+                    <Icon name="award" />
+                  </span>
+                  <div className="cert-body">
+                    <div className="item-head">
+                      <div>
+                        <h3>
+                          {c.url ? (
+                            <a href={c.url} target="_blank" rel="noopener noreferrer">
+                              {t(c.name)} ↗
+                            </a>
+                          ) : (
+                            t(c.name)
+                          )}
+                        </h3>
+                        <p className="sub muted">{c.issuer}</p>
+                      </div>
+                      <span className="date">{c.year}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
         <Section id="languages" title={t(labels.languages)}>
           <ul className="langs">
             {languages.map((l) => (
@@ -459,22 +497,6 @@ export default function Resume() {
           </ul>
         </Section>
 
-        <Section id="interests" title={t(labels.interests)}>
-          <p className="muted intro">{t(labels.interestsIntro)}</p>
-          <div className="interests">
-            {interests.map((i) => (
-              <div className="card interest spot" data-kind={i.icon} key={i.icon}>
-                <span className="interest-icon">
-                  <Icon name={i.icon} />
-                </span>
-                <div>
-                  <h3>{t(i.title)}</h3>
-                  <p>{t(i.text)}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
 
         <section id="contact" className="contact reveal">
           <div className="contact-glow" aria-hidden />
@@ -486,6 +508,11 @@ export default function Resume() {
             <a className="btn primary" href={`mailto:${profile.email}`}>
               <Icon name="mail" /> {profile.email}
             </a>
+            {profile.whatsapp && (
+              <a className="btn" href={`https://wa.me/${profile.whatsapp}`} target="_blank" rel="noopener noreferrer">
+                <Icon name="whatsapp" /> WhatsApp
+              </a>
+            )}
             <button className="btn" onClick={copyEmail}>
               <Icon name="copy" /> {t(labels.copyEmail)}
             </button>
