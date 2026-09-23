@@ -32,13 +32,6 @@ export const profile = {
   } as T,
 };
 
-export const stats: { value: string; label: T }[] = [
-  { value: "16", label: { es: "meses en Financial Services de ExxonMobil", en: "months in ExxonMobil Financial Services" } },
-  { value: "+50", label: { es: "proveedores sumados a SupplyO", en: "suppliers onboarded at SupplyO" } },
-  { value: "4", label: { es: "idiomas", en: "languages" } },
-  { value: "2", label: { es: "licenciaturas en curso", en: "degrees in progress" } },
-];
-
 export const labels = {
   nav: {
     about: { es: "Sobre mí", en: "About" },

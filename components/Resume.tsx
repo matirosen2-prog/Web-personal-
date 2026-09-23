@@ -7,7 +7,6 @@ import {
   type Job,
   type T,
   profile,
-  stats,
   labels,
   experience,
   volunteering,
@@ -161,16 +160,6 @@ export default function Resume() {
             <Icon name="pin" /> {t(profile.location)}
           </p>
         </header>
-
-        {/* ───────── Stats ───────── */}
-        <dl className="stats reveal">
-          {stats.map((s) => (
-            <div key={s.value + s.label.en}>
-              <dt>{s.value}</dt>
-              <dd>{t(s.label)}</dd>
-            </div>
-          ))}
-        </dl>
 
         <Section id="about" title={t(labels.about)}>
           <p className="lead">{t(profile.summary)}</p>

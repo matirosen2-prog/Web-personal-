@@ -96,7 +96,7 @@ a { color: inherit; text-decoration: none; }
 .seg button[aria-pressed="true"] { background: var(--bg); color: var(--text); box-shadow: 0 0 0 1px var(--border-strong); }
 
 /* ───────── Hero ───────── */
-.hero { padding: 72px 0 48px; }
+.hero { padding: 72px 0 40px; border-bottom: 1px solid var(--border); }
 .avatar {
   width: 88px; height: 88px; border-radius: 50%; overflow: hidden;
   border: 1px solid var(--border); margin-bottom: 24px; background: var(--bg-soft);
@@ -124,16 +124,6 @@ a { color: inherit; text-decoration: none; }
 .socials a:hover { color: var(--text); background: var(--bg-soft); }
 .location { display: flex; align-items: center; gap: 6px; margin: 20px 0 0; color: var(--faint); font-size: 13px; }
 .location .icon { width: 14px; height: 14px; }
-
-/* ───────── Stats ───────── */
-.stats {
-  display: grid; grid-template-columns: repeat(4, 1fr); margin: 0;
-  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-}
-.stats > div { padding: 18px; background: var(--bg-soft); }
-.stats > div + div { border-left: 1px solid var(--border); }
-.stats dt { font-size: 24px; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.stats dd { margin: 4px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--muted); }
 
 /* ───────── Sections ───────── */
 .section { display: grid; grid-template-columns: 150px 1fr; gap: 32px; padding: 48px 0; border-bottom: 1px solid var(--border); }
@@ -224,9 +214,6 @@ h4 { margin: 0; font-size: 13.5px; font-weight: 500; color: var(--muted); }
 @media (max-width: 760px) {
   .navlinks { display: none; }
   .section { grid-template-columns: 1fr; gap: 16px; padding: 40px 0; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .stats > div:nth-child(3) { border-left: 0; }
-  .stats > div:nth-child(n + 3) { border-top: 1px solid var(--border); }
   .interests { grid-template-columns: 1fr; }
   .skill-row { grid-template-columns: 1fr; gap: 8px; }
 }
