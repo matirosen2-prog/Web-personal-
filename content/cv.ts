@@ -8,6 +8,8 @@ export type T = Record<Lang, string>;
 
 export const profile = {
   name: "Matias Rosenblatt",
+  // Dirección pública de la web (se usa para SEO y vista previa en redes).
+  url: "https://matias-rosenblatt.vercel.app",
   email: "matirosen2@gmail.com",
   photo: "/matias.jpg",
   // Dejá cualquiera vacío ("") para ocultarlo.
@@ -40,7 +42,9 @@ export const labels = {
     about: { es: "Sobre mí", en: "About" },
     letter: { es: "Carta", en: "Letter" },
     experience: { es: "Experiencia", en: "Experience" },
-    certifications: { es: "Certificaciones", en: "Certifications" },
+    projects: { es: "Proyectos", en: "Projects" },
+    education: { es: "Formación", en: "Education" },
+    skills: { es: "Habilidades", en: "Skills" },
     contact: { es: "Contacto", en: "Contact" },
   },
   about: { es: "Sobre mí", en: "About" },
@@ -61,11 +65,6 @@ export const labels = {
   languages: { es: "Idiomas", en: "Languages" },
   certifications: { es: "Certificaciones y cursos", en: "Certifications & courses" },
   whatsapp: { es: "WhatsApp", en: "WhatsApp" },
-  interests: { es: "Intereses", en: "Interests" },
-  interestsIntro: {
-    es: "Lo que me mueve fuera del trabajo, y que muchas veces termina influyendo en cómo trabajo.",
-    en: "What drives me outside of work—and often shapes how I work.",
-  },
   contact: { es: "Contacto", en: "Contact" },
   contactTitle: { es: "Hablemos.", en: "Let's talk." },
   contactText: {
@@ -73,6 +72,17 @@ export const labels = {
     en: "Have an opportunity or a project in mind? Drop me a line and I'll get back to you soon.",
   },
   downloadCv: { es: "Descargar CV", en: "Download CV" },
+  viewCv: { es: "Ver CV completo", en: "View full résumé" },
+  skip: { es: "Saltar al contenido", en: "Skip to content" },
+  localTime: { es: "Hora local", en: "Local time" },
+  training: { es: "Formación", en: "Education" },
+  footer: {
+    es: "Diseñado y desarrollado por Matias Rosenblatt con Next.js. Publicado en Vercel.",
+    en: "Designed and built by Matias Rosenblatt with Next.js. Deployed on Vercel.",
+  },
+  notFoundTitle: { es: "Página no encontrada", en: "Page not found" },
+  notFoundText: { es: "El link que seguiste no existe o fue movido.", en: "The link you followed doesn't exist or was moved." },
+  backHome: { es: "Volver al inicio", en: "Back to home" },
   writeMe: { es: "Escribime", en: "Get in touch" },
   visit: { es: "Visitar sitio", en: "Visit site" },
   copyEmail: { es: "Copiar email", en: "Copy email" },
@@ -118,6 +128,8 @@ export type Job = {
   dates: T;
   context?: T;
   bullets: Record<Lang, string[]>;
+  // Etiquetas cortas que se muestran debajo de cada puesto.
+  tags?: Record<Lang, string[]>;
 };
 
 export const experience: Job[] = [
@@ -146,6 +158,10 @@ export const experience: Job[] = [
         "Led business development, building a network of 50+ suppliers across Argentina.",
       ],
     },
+    tags: {
+      es: ["Business case", "Monetización", "Next.js", "Supabase", "Agentes de IA"],
+      en: ["Business case", "Monetization", "Next.js", "Supabase", "AI agents"],
+    },
   },
   {
     role: { es: "Financial Services Intern", en: "Financial Services Intern" },
@@ -168,6 +184,10 @@ export const experience: Job[] = [
         "Partnered with regional and international Finance teams in English.",
       ],
     },
+    tags: {
+      es: ["SAP", "Activos fijos", "Reporting financiero", "Cierre mensual"],
+      en: ["SAP", "Fixed assets", "Financial reporting", "Month-end close"],
+    },
   },
   {
     role: { es: "Junior Contable", en: "Junior Accountant" },
@@ -180,6 +200,10 @@ export const experience: Job[] = [
     bullets: {
       es: ["Registro de libros diarios y asientos contables; soporte en cierres contables."],
       en: ["Maintained general journals and accounting entries; supported month-end close."],
+    },
+    tags: {
+      es: ["Contabilidad", "Cierre contable"],
+      en: ["Accounting", "Month-end close"],
     },
   },
 ];
@@ -236,6 +260,7 @@ export const volunteering: Job[] = [
 export type Project = {
   name: string;
   url?: string;
+  image?: string;
   description: T;
   tags: string[];
 };
@@ -245,11 +270,12 @@ export const projects: Project[] = [
   {
     name: "SupplyO Network",
     url: "https://supplyonetwork.com",
+    image: "/projects/supplyo.jpg",
     description: {
       es: "Marketplace B2B que conecta compradores y proveedores de packaging a través de pedidos de cotización y un modelo de créditos. Incluye algoritmo de matching, cobros con MercadoPago y flujos de onboarding.",
       en: "B2B marketplace connecting packaging buyers and suppliers through quote requests and a credit-based model. Includes a matching algorithm, MercadoPago payments and onboarding flows.",
     },
-    tags: ["Next.js", "TypeScript", "Supabase", "MercadoPago", "AI agents"],
+    tags: ["Next.js", "TypeScript", "Supabase", "MercadoPago", "IA / AI"],
   },
 ];
 
@@ -292,7 +318,6 @@ export const skills: { group: T; items: Record<Lang, string[]> }[] = [
   },
 ];
 
-// value: 0–100, solo para la barra visual.
 // ─── Certificaciones y cursos ───
 // Sumá uno por línea. "url" es opcional (link al certificado).
 export const certifications: { name: T; issuer: string; year: string; url?: string }[] = [
@@ -308,53 +333,10 @@ export const certifications: { name: T; issuer: string; year: string; url?: stri
   },
 ];
 
+// value: 0–100, solo para la barra visual.
 export const languages: { name: T; level: T; value: number }[] = [
   { name: { es: "Español", en: "Spanish" }, level: { es: "Nativo", en: "Native" }, value: 100 },
   { name: { es: "Inglés", en: "English" }, level: { es: "C1/C2 · Cambridge", en: "C1/C2 · Cambridge" }, value: 92 },
   { name: { es: "Portugués", en: "Portuguese" }, level: { es: "B1", en: "B1" }, value: 55 },
   { name: { es: "Francés", en: "French" }, level: { es: "A2", en: "A2" }, value: 35 },
-];
-
-// icon: "growth" | "finance" | "sport" | "music" | "tech"
-export const interests: { icon: string; title: T; text: T }[] = [
-  {
-    icon: "growth",
-    title: { es: "Desarrollo personal", en: "Personal growth" },
-    text: {
-      es: "Me interesa aprender de forma continua: hábitos, liderazgo y cómo ser un poco mejor cada día.",
-      en: "I'm into continuous learning: habits, leadership and getting a little better every day.",
-    },
-  },
-  {
-    icon: "finance",
-    title: { es: "Finanzas e inversiones", en: "Finance & investing" },
-    text: {
-      es: "Me apasionan los mercados, las inversiones y entender cómo las empresas crean valor.",
-      en: "I'm passionate about markets, investing and understanding how companies create value.",
-    },
-  },
-  {
-    icon: "sport",
-    title: { es: "Deporte", en: "Sports" },
-    text: {
-      es: "El deporte me da disciplina, constancia y energía, y lo llevo a todo lo que hago.",
-      en: "Sports give me discipline, consistency and energy that I bring to everything I do.",
-    },
-  },
-  {
-    icon: "music",
-    title: { es: "Música", en: "Music" },
-    text: {
-      es: "La música me acompaña en el día a día y es una fuente constante de inspiración.",
-      en: "Music is part of my everyday life and a constant source of inspiration.",
-    },
-  },
-  {
-    icon: "tech",
-    title: { es: "Tecnología e IA", en: "Tech & AI" },
-    text: {
-      es: "Disfruto construir productos y automatizar procesos con IA; siempre estoy probando herramientas nuevas.",
-      en: "I enjoy building products and automating processes with AI—always trying out new tools.",
-    },
-  },
 ];
